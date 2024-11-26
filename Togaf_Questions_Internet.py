@@ -43,8 +43,9 @@ with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
                     st.write(line[3])
                     st.write(line[4])
                     st.write(line[5])
-                    right_questions.append(line[6])
-                    st.selectbox("Enter response: ",("A", "B", "C", "D"), key=f"question_{questions_nums}", index=None)
+                    st.write(line[6])
+                    right_questions.append(line[7])
+                    st.selectbox("Enter response: ",("A", "B", "C", "D", "E"), key=f"question_{questions_nums}", index=None)
             questions_nums = questions_nums+1
             f.close()
             st.session_state.questions_nums = questions_nums-1
@@ -66,6 +67,7 @@ with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
                     st.write(line[3])
                     st.write(line[4])
                     st.write(line[5])
+                    st.write(line[6])
             questions_nums = questions_nums+1
             f.close()
     submit_button = st.form_submit_button(label="Submit", on_click=callback_function, args=None)
