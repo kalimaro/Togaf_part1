@@ -19,7 +19,7 @@ def callback_function():
     st.session_state.form_submitted = True
 
     
-st.title("TOGAF 9.2 Part 1 Mock Test!")
+st.title("TOGAF 9.2 Part 1 Mock Test! (20 Questions)")
 
 with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
     #st.write("Entrando no form= " + str(st.session_state.form_submitted))
