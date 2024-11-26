@@ -25,7 +25,7 @@ with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
     #st.write("Entrando no form= " + str(st.session_state.form_submitted))
     if st.session_state.form_submitted == False:
         questions_nums = 1
-        f = open ('Togaf_Data_Bank.csv',"r", encoding='UTF8')
+        f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
         csv_reader = csv.reader(f)
         for line in csv_reader:
             questions_list.append(line[0])
@@ -34,7 +34,7 @@ with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
         newlist = questions_list[:15]
         st.session_state.newlist = newlist
         for qt in newlist:
-            f = open ('Togaf_Data_Bank.csv',"r", encoding='UTF8')
+            f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
             csv_reader = csv.reader(f)
             for line in csv_reader:
                 if line[0]== qt :
@@ -51,13 +51,13 @@ with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
             st.session_state.right_questions = right_questions
     else:
         questions_nums = 1
-        f = open ('Togaf_Data_Bank.csv',"r", encoding='UTF8')
+        f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
         csv_reader = csv.reader(f)
         for line in csv_reader:
             questions_list.append(line[0])
         f.close()
         for qt in st.session_state.newlist:
-            f = open ('Togaf_Data_Bank.csv',"r", encoding='UTF8')
+            f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
             csv_reader = csv.reader(f)
             for line in csv_reader:
                 if line[0]== qt :
