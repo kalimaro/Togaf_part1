@@ -38,7 +38,7 @@ with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
             csv_reader = csv.reader(f)
             for line in csv_reader:
                 if line[0]== qt :
-                    st.write(str(questions_nums) + "-- " + line[1])
+                    st.write(str(questions_nums) + "\)   " + line[1])
                     st.write(line[2])
                     st.write(line[3])
                     st.write(line[4])
@@ -62,7 +62,7 @@ with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
             csv_reader = csv.reader(f)
             for line in csv_reader:
                 if line[0]== qt :
-                    st.write(str(questions_nums) + "-- " + line[1])
+                    st.write(str(questions_nums) + "\)   " + line[1])
                     st.write(line[2])
                     st.write(line[3])
                     st.write(line[4])
