@@ -12,7 +12,7 @@ if 'submitted' not in st.session_state:
 if 'correct_answers' not in st.session_state:
     st.session_state.correct_answers = []
 
-st.title("TOGAF 9.2 Part 1 Mock Test (20 Questions)")
+st.title("TOGAF 9.2 Part 1 Mock Test (20 Questions) - revised")
 
 # Load questions only once
 if not st.session_state.questions:
