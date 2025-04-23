@@ -12,7 +12,7 @@ if 'submitted' not in st.session_state:
 if 'correct_answers' not in st.session_state:
     st.session_state.correct_answers = []
 
-st.title("TOGAF 9.2 Part 1 Mock Test (20 Questions) - revised")
+st.title("TOGAF 9.2 Part 1 Mock Test (5 Questions)")
 
 # Load questions only once
 if not st.session_state.questions:
@@ -20,7 +20,7 @@ if not st.session_state.questions:
         reader = csv.reader(f)
         questions_list = list(reader)  # Load all questions
         shuffle(questions_list)
-        st.session_state.questions = questions_list[:20] # Store 20 shuffled questions
+        st.session_state.questions = questions_list[:5] # Store 5 shuffled questions
         st.session_state.correct_answers = [q[7] for q in st.session_state.questions] # Store correct answers
 
 # Display the quiz form
