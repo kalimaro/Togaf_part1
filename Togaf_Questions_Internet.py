@@ -1,55 +1,120 @@
+import pandas as pd
 import streamlit as st
 import csv
 from random import shuffle
 
-# Initialize session state variables
-if 'questions' not in st.session_state:
-    st.session_state.questions = []
+#Global initializations
+rights = 0
+questions_list = []
+list_responses = []
+wrong_questions = []
+right_questions = []
+
 if 'responses' not in st.session_state:
     st.session_state.responses = {}
-if 'submitted' not in st.session_state:
-    st.session_state.submitted = False
-if 'correct_answers' not in st.session_state:
-    st.session_state.correct_answers = []
+if 'form_submitted' not in st.session_state:
+    st.session_state.form_submitted = False
 
-st.title("TOGAF 9.2 Part 1 Mock Test (20 Questions)")
+def callback_function():
+    st.session_state.form_submitted = True
 
-# Load questions only once
-if not st.session_state.questions:
-    with open('Togaf_Questions_Bank.csv', 'r', encoding='UTF8') as f:
-        reader = csv.reader(f)
-        questions_list = list(reader)  # Load all questions
+    
+st.title("TOGAF 9.2 Part 1 Mock Test! (20 Questions)")
+
+with st.form(key="my_form", clear_on_submit=True, enter_to_submit=False):
+    #st.write("Entrando no form= " + str(st.session_state.form_submitted))
+    if st.session_state.form_submitted == False:
+        questions_nums = 1
+        f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
+        csv_reader = csv.reader(f)
+        for line in csv_reader:
+            questions_list.append(line[0])
+        f.close()
         shuffle(questions_list)
-        st.session_state.questions = questions_list[:20] # Store 20 shuffled questions
-        st.session_state.correct_answers = [q[7] for q in st.session_state.questions] # Store correct answers
+        newlist = questions_list[:20]
+        st.session_state.newlist = newlist
+        for qt in newlist:
+            f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
+            csv_reader = csv.reader(f)
+            for line in csv_reader:
+                if line[0]== qt :
+                    st.write(str(questions_nums) + "\)   " + line[1])
+                    st.write(line[2])
+                    st.write(line[3])
+                    st.write(line[4])
+                    st.write(line[5])
+                    st.write(line[6])
+                    right_questions.append(line[7])
+                    st.selectbox("Enter response: ",("A", "B", "C", "D", "E"), key=f"question_{questions_nums}", index=None)
+            questions_nums = questions_nums+1
+            f.close()
+            st.session_state.questions_nums = questions_nums-1
+            st.session_state.right_questions = right_questions
+    else:
+        questions_nums = 1
+        f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
+        csv_reader = csv.reader(f)
+        for line in csv_reader:
+            questions_list.append(line[0])
+        f.close()
+        for qt in st.session_state.newlist:
+            f = open ('Togaf_Questions_Bank.csv',"r", encoding='UTF8')
+            csv_reader = csv.reader(f)
+            for line in csv_reader:
+                if line[0]== qt :
+                    st.write(str(questions_nums) + "\)   " + line[1])
+                    st.write(line[2])
+                    st.write(line[3])
+                    st.write(line[4])
+                    st.write(line[5])
+                    st.write(line[6])
+            questions_nums = questions_nums+1
+            f.close()
+    submit_button = st.form_submit_button(label="Submit", on_click=callback_function, args=None)
+        
+    #st.write(right_questions)
 
-# Display the quiz form
-with st.form(key="quiz_form"):
-    for i, question in enumerate(st.session_state.questions):
-        st.write(f"{i+1}) {question[1]}")  # Question text
-        for j in range(2, 7):  # Options A to E
-            st.write(question[j])
-        st.session_state.responses[i] = st.selectbox("Enter response:", ("A", "B", "C", "D", "E"), key=f"q{i}", index=None)
-    submitted = st.form_submit_button("Submit")
-
-# Process results after submission
-if submitted:
-    st.session_state.submitted = True
-
-if st.session_state.submitted:
-    correct_count = 0
-    for i in range(len(st.session_state.questions)):
-        if st.session_state.responses[i] == st.session_state.correct_answers[i]:
-            correct_count += 1
-            st.success(f"Question {i+1} is Correct! Your answer: {st.session_state.responses[i]}")
-        else:
-            st.error(f"Question {i+1} is Incorrect. Your answer: {st.session_state.responses[i]}, Correct answer: {st.session_state.correct_answers[i]}")
-
-    score = (correct_count / len(st.session_state.questions)) * 100
-    st.info(f"Your final score: {score:.2f}%")
-
-    # Reset button
-    if st.button("Retake Quiz"):
-        st.session_state.submitted = False
-        st.session_state.responses = {} # Clear responses
-        st.experimental_rerun() # Rerun to show a fresh quiz
+    
+    if submit_button:
+        #st.write(st.session_state.form_submitted)
+        #for i in range(questions_nums-1):
+        for i in range(st.session_state.questions_nums):
+            st.session_state.responses[f"question_{i+1}"] = st.session_state[f"question_{i+1}"]
+            if st.session_state.responses[f"question_{i+1}"] == st.session_state.right_questions[i]:
+                #for qt in st.session_state.newlist:
+                #    st.write(st.session_state.newlist)
+                #    st.write(qt)
+                #    f = open ('Archimate_Data_Bank.csv',"r", encoding='UTF8')
+                #    csv_reader = csv.reader(f)
+                #    for line in csv_reader:
+                #        if line[0]== qt :
+                #            st.write(line[1])
+                #            st.write(line[2])
+                #            st.write(line[3])
+                #            st.write(line[4])
+                #            st.write(line[5])
+                #            break
+                #    f.close()
+                #    #break
+                st.warning("Question " + str(i+1) + " is Correct! Your response was: " + str(st.session_state.responses[f"question_{i+1}"]),icon=":material/check:")
+                rights = rights+1
+                list_responses.append(st.session_state.responses[f"question_{i+1}"])
+            else:
+                #for qt in st.session_state.newlist:
+                #    f = open ('Archimate_Data_Bank.csv',"r", encoding='UTF8')
+                #    csv_reader = csv.reader(f)
+                #    for line in csv_reader:
+                #        if line[0]== qt :
+                #            st.write(line[1])
+                #            st.write(line[2])
+                #            st.write(line[3])
+                #            st.write(line[4])
+                #            st.write(line[5])
+                #    break
+                #    f.close()
+                st.warning("Question " + str(i+1) + " is Incorrect! " + "Your response was: " + st.session_state.responses[f"question_{i+1}"] + " and the right answer is: " + str(st.session_state.right_questions[i]),icon=":material/close:")
+                list_responses.append(st.session_state.responses[f"question_{i+1}"])
+        final_score = rights/len(list_responses)*100
+        st.write("Your final score is: "+str(final_score)+"%")
+        st.session_state.form_submitted = False
+        st.stop()
